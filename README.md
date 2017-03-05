@@ -1,6 +1,10 @@
 # Amazon Fire Tv for Node.js
 A simple NodeJs Module that allows to stream a video to any Fire TV device.
 
+
+ Feel free to spend me a beer for this work over Paypal sor3nt@gmail.com, thank you!
+
+
 ## How to use:
 
 Include the library:
