@@ -45,7 +45,6 @@ module.exports.server = function( fireTvIp ){
             return 41700;
         },
 
-
         _init: function () {
             self._connectToDevice( fireTvIp, self._getCommunicationPort() );
         },
@@ -54,7 +53,6 @@ module.exports.server = function( fireTvIp ){
             self._client = new net.Socket();
             self._client.connect(port, ip, function() {
                 console.log('[FireTv] Connecting...');
-
                 self._sendHello();
             });
 
@@ -74,7 +72,6 @@ module.exports.server = function( fireTvIp ){
                         self._client.end();
                     }
                 }
-
             });
 
             self._client.on('error', function() {
@@ -82,12 +79,10 @@ module.exports.server = function( fireTvIp ){
                 console.log('[FireTv] Error');
             });
 
-
             self._client.on('close', function() {
                 self._state = 'closed';
                 console.log('[FireTv] Connection closed');
             });
-
         },
 
         _sendHello: function () {
@@ -131,7 +126,6 @@ module.exports.server = function( fireTvIp ){
             });
 
             var request = new Buffer(
-
                 '800100010000000E' +                        // base header
                 '7365744D65646961536F75726365' +            // setMediaSource (command)
                 '000000010B0001000000' +                    // unknown code
