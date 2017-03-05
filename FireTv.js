@@ -5,7 +5,7 @@ var net = require('net');
  * Amazon Fire TV Socket Connection Interface
  * Feel free to spend me a beer for this work <paypal:sor3nt@gmail.com>, thank you!
  *
- * A simple NodeJs Module that allows to stream a video to any Fire TV device.
+ * A simple Node.js Module that allows to stream a video to any Fire TV device.
  *
  * Usage:
  *
@@ -140,9 +140,7 @@ module.exports.server = function( fireTvIp ){
                 '00'                                        // end of command ?
             , "hex");
 
-            var finalBuffer = new Buffer(request, "hex");
-
-            self._client.write(finalBuffer);
+            self._client.write(new Buffer(request, "hex"));
         },
 
         stream: function ( options ) {
