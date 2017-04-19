@@ -11,7 +11,7 @@ var FireTv = require('./FireTv.js').server;
 
 ```
 
-Create a Fire TV instance
+Create a new instance
 ```
 var fireTv = new FireTv('192.168.0.23');
 ```
