@@ -139,7 +139,6 @@ module.exports.server = function( fireTvIp ){
                 new Buffer(manufacturer).toString('hex') +  // manufacturer obj
                 '00'                                        // end of command ?
             , "hex");
-
             self._client.write(new Buffer(request, "hex"));
         },
 
@@ -152,7 +151,7 @@ module.exports.server = function( fireTvIp ){
                     self._sendVideoRequest( options );
                 });
             }else{
-                console.log('[FireTv] Not Connected, current Status is ' + self._status);
+                console.log('[FireTv] Not Connected, current state is ' + self._state);
             }
         }
     };
