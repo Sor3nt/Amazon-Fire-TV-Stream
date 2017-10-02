@@ -3,7 +3,7 @@ A simple Node.js Module that allows to stream a video to any Fire TV device.
 
  Feel free to spend me a beer for this work over Paypal sor3nt@gmail.com, thank you!
 
-## How to use:
+## How to use the FireTv Streamer:
 
 Include the library:
 ```
@@ -13,7 +13,7 @@ var FireTv = require('./FireTv.js').server;
 
 Create a new instance
 ```
-var fireTv = new FireTv('192.168.0.23');
+var fireTv = new FireTv('192.168.0.23', 12345);
 ```
 
 Start the Stream
@@ -25,11 +25,23 @@ fireTv.stream({
 });
 ```
 
-## Information! Magic socket port
-  
-I use in this library the Port `41700` for the communication but it can always happend that you have a different port.
+## How to use the FireTv Discovery:
 
-If your connection failed, try to load the BubbleUPnP App and then Sniff the traffic. Look around for /whisperlink and pick up the port from this request.
+Include the library:
+```
+var FireTvDns = require('./FireTvDns.js').server;
 
-Please provide any suggestion how we can detect the right Port.
+```
+
+Create a new instance
+```
+ new FireTvDns({
+    found : function (device) {
+        console.log("Found Device ", device);
+    }
+ });
+```
+
+## Special thanks to
+[tmm1](https://github.com/tmm1) for helping to discover the amazon device ip and port!
 

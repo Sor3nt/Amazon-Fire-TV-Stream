@@ -1,6 +1,7 @@
 
 var net = require('net');
 
+
 /**
  * Amazon Fire TV Socket Connection Interface
  * Feel free to spend me a beer for this work <paypal:sor3nt@gmail.com>, thank you!
@@ -17,7 +18,7 @@ var net = require('net');
  *  poster: 'http://192.168.0.39:57645/external/video/thumbnails/6744.jpg'
  * });
  */
-module.exports.server = function( fireTvIp ){
+module.exports.server = function( fireTvIp, fireTvPort ){
 
     var self = {
 
@@ -35,18 +36,8 @@ module.exports.server = function( fireTvIp ){
         // in the case the connection is not open yet, save the playback request
         _callbackStack: [],
 
-        /**
-         * WARNING! IMPORTANT!
-         * I can not find out how the Fire TV Stick select this Port.
-         * Please provide any Ideas about this !
-         */
-        _getCommunicationPort: function () {
-            //possible values are: 40904, 41700, 45943 or other....
-            return 41700;
-        },
-
         _init: function () {
-            self._connectToDevice( fireTvIp, self._getCommunicationPort() );
+            self._connectToDevice( fireTvIp, fireTvPort );
         },
 
         _connectToDevice: function( ip, port ){
@@ -139,14 +130,15 @@ module.exports.server = function( fireTvIp ){
                 new Buffer(manufacturer).toString('hex') +  // manufacturer obj
                 '00'                                        // end of command ?
             , "hex");
+
             self._client.write(new Buffer(request, "hex"));
         },
 
         stream: function ( options ) {
-            if (self._state == 'connected'){
+            if (self._state === 'connected'){
                 self._sendVideoRequest( options );
                 self._client.end();
-            }else if( self._state != 'error' && self._state != 'closed'){
+            }else if( self._state !== 'error' && self._state !== 'closed'){
                 self._callbackStack.push(function () {
                     self._sendVideoRequest( options );
                 });
