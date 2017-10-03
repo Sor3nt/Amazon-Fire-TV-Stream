@@ -22,6 +22,8 @@ module.exports.server = function( opt ){
 
         _client : false,
 
+        _interval : false,
+
         _init : function () {
 
             self._client = dgram.createSocket({
@@ -33,6 +35,9 @@ module.exports.server = function( opt ){
 
             self._client.bind(5353);
 
+            //we send every 5 seconds a broadcast request until we receive a response
+            //sometimes the first request gives no feedback
+            self._interval = setInterval(self._sendBroadcast, 5000);
         },
 
         _createEvents: function () {
@@ -41,11 +46,17 @@ module.exports.server = function( opt ){
         },
 
         _onListening: function () {
-            console.log("listening on ", self._client.address().address);
+            console.log("[FireTvDns] Listening on ", self._client.address().address);
 
             self._client.addMembership('224.0.0.251', undefined);
             self._client.setMulticastTTL(255);
             self._client.setMulticastLoopback(true);
+
+            self._sendBroadcast();
+        },
+
+        _sendBroadcast: function () {
+            console.log("[FireTvDns] Build Broadcast payload for _amzn-wplay");
 
             var payload = packet.encode({
                 questions: [{
@@ -67,6 +78,8 @@ module.exports.server = function( opt ){
 
             //we only process responses...
             if (message.type !== "response") return true;
+
+            clearInterval(self._interval);
 
             message.answers.forEach(function (answer) {
 
@@ -92,10 +105,10 @@ module.exports.server = function( opt ){
         },
 
         _send : function ( payload ) {
-            console.log("Send payload: ", payload );
+            console.log("[FireTvDns] Send payload: ", payload );
 
             self._client.send(payload, 0, payload.length, 5353, '224.0.0.251', function (err, bytes) {
-                if (!err) console.log('Payload submitted');
+                if (!err) console.log('[FireTvDns] Payload submitted');
             });
         }
 
