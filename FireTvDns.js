@@ -62,7 +62,7 @@ module.exports.server = function( opt ){
                 questions: [{
                     name: '_amzn-wplay._tcp.local',
                     type: 'SRV',
-                    class: 1
+                    class: 'IN'
                 }]
             });
 
